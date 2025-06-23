@@ -1,5 +1,5 @@
 <template>
-  <el-sub-menu index="1">
+  <!-- <el-sub-menu index="1">
     <template #title>
       <el-icon><location /></el-icon>
       <span>Navigator One</span>
@@ -23,14 +23,41 @@
   <el-menu-item index="3" disabled>
     <el-icon><document /></el-icon>
     <span>Navigator Three</span>
-  </el-menu-item>
-  <el-menu-item index="4">
-    <el-icon><setting /></el-icon>
-    <span>Navigator Four</span>
-  </el-menu-item>
+  </el-menu-item> -->
+  
+  <template v-for="(item,index) in props.menuData">
+    <!-- 没有子菜单的情况 -->
+    <el-menu-item 
+    v-if="!item.children || item.children?.length === 0" :index="`${props.index}-${item.meta.id}`"
+    :key="`${props.index}-${item.meta.id}`">
+      <!-- <el-icon><setting /></el-icon>
+      <span>Navigator Four</span> -->
+      <el-icon size="20">
+        <component :is="item.meta.icon"></component>
+      </el-icon>
+      <span>{{ item.meta.name }}</span>
+    </el-menu-item>
+    <!-- 有子菜单的情况下需要el-sub-menu包裹 -->
+    <el-sub-menu v-else :index="`${props.index}-${item.meta.id}`">
+      <template #title>
+        <el-icon size="20">
+          <component :is="item.meta.icon"></component>
+        </el-icon>
+        <span>{{ item.meta.name }}</span>
+    </template>
+    <!-- 子菜单显示用el-menu-item -->
+    <!-- 递归渲染，与文件名字有关 -->
+    <tree-menu :index="`${props.index}-${item.meta.id}`" 
+    :menuData="item.children" ></tree-menu>
+    </el-sub-menu>
+  </template>
+  
 </template>
 
 <script setup lang="ts">
+const props = defineProps(['menuData','index'])
+
+console.log(props)
 
 </script>
 

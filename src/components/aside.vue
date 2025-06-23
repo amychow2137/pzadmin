@@ -9,12 +9,20 @@
         @close="handleClose"
       >
         <p class="logo-lg">DIDI陪诊</p>
-        <TreeMenu />
+        <TreeMenu :index="1" :menuData="menuData"/>
       </el-menu>
 </template>
 
 <script setup lang="ts">
    import TreeMenu from './treeMenu.vue'
+   import {useRouter} from 'vue-router'
+   import { reactive } from 'vue'
+
+   const router = useRouter();
+
+// 直接通过 reactive 初始化并保留类型推断
+    const menuData = reactive((router.options.routes ?? [])?.[0]?.children || []);
+  
 
   const handleOpen = () =>{
 
