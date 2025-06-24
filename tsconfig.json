@@ -3,5 +3,13 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "paths": {
+    "vuex": ["./node_modules/vuex/types"]
+    },
+    "allowJs": true,
+    "checkJs": false, // 关闭 JS 文件的类型检查（临时方案）
+    "declaration": true, // 生成声明文件（若使用 JS 库)
+  },
 }

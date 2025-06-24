@@ -28,7 +28,8 @@
   <template v-for="(item,index) in props.menuData">
     <!-- 没有子菜单的情况 -->
     <el-menu-item 
-    v-if="!item.children || item.children?.length === 0" :index="`${props.index}-${item.meta.id}`"
+      @click="handleClick(item,`${props.index}-${item.meta.id}`)"
+    v-if="!item.children || item.children?.length == 0" :index="`${props.index}-${item.meta.id}`"
     :key="`${props.index}-${item.meta.id}`">
       <!-- <el-icon><setting /></el-icon>
       <span>Navigator Four</span> -->
@@ -55,9 +56,16 @@
 </template>
 
 <script setup lang="ts">
+import {useRouter} from 'vue-router'
+// 创建router实例
+const router = useRouter()
+
 const props = defineProps(['menuData','index'])
 
-console.log(props)
+//点击菜单
+const handleClick = (item,active) =>{
+  router.push(item.meta.path)
+}
 
 </script>
 
