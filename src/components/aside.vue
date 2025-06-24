@@ -6,7 +6,7 @@
         class="aside-container"
         default-active="2"
         text-color="#fff"
-        :collaps='isCollapse'
+        :collapse='isCollapse'
         @open="handleOpen"
         @close="handleClose"
       >
