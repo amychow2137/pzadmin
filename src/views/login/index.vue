@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { ref,reactive } from 'vue'
 import { getCode } from '../../api'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 
 const imgUrl = new URL('../../../public/login-head.png',import.meta.url).href
 
@@ -115,10 +115,10 @@ const countDownChange =() =>{
    },1000)
    flag = true
    getCode({ tel : loginForm.userName }).then(({ data}) =>{
-      console.log(data,'data')
-      if (data.code === 10000) {
-         ElMessage.success('发送成功')
-      }
+   console.log(data,'data')
+   if (data.code === 10000) {
+      ElMessage.success('发送成功')
+   }
    })
 }
 

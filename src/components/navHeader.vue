@@ -3,7 +3,7 @@
     <div class="header-left flex-box">
         <el-icon class="icon" size="20" @click="store.commit('collapseMenu')"><Fold /></el-icon>
         <ul  class="flex-box">
-            <li 
+        <li
             v-for="(item,index) in selectMenu"
             :key="item.path"
             :class="{selected : route.path === item.path}"
@@ -63,7 +63,6 @@ import { isTemplateExpression } from 'typescript';
     if (route.path !== item.path) {
         return
     }
-
     const selectMenuData = selectMenu.value
     // 如果删除是最后一项
     if (index === selectMenuData.length){
