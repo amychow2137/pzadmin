@@ -10,6 +10,7 @@
             <el-link type="primary" @click="handlechange">{{ fromType ? '返回登录': '注册账号' }}</el-link>
          </div>
            <el-form 
+           ref="loginFormRef"
            :model="loginForm" 
            style="max-width: 600px;"
            class="demo-ruleForm"
@@ -29,7 +30,7 @@
               </el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type = "primary" :style="{width: '100%'}" @click="submitForm">
+              <el-button type = "primary" :style="{width: '100%'}" @click="submitForm(loginFormRef)">
                  {{ fromType ? '注册账号': '登录' }}
               </el-button>
             </el-form-item>
@@ -40,8 +41,8 @@
 
 <script setup lang="ts">
 import { ref,reactive } from 'vue'
-import { getCode } from '../../api'
-// import { ElMessage } from 'element-plus'
+import { getCode,userAuthentication,login } from '../../api'
+import { useRouter } from 'vue-router'
 
 const imgUrl = new URL('../../../public/login-head.png',import.meta.url).href
 
@@ -52,6 +53,7 @@ const loginForm = reactive({
    validCode:''
 })
 
+const router = useRouter()
 //  切换表单（0登录 1注册）
 const fromType = ref(0) 
 // 点击切换登录和注册
@@ -104,11 +106,12 @@ const countDownChange =() =>{
             })
    }
    // 倒计时
-   setInterval(()=>{
+   const time = setInterval(()=>{
       if (countDown.time <= 0) {
          countDown.time = 60
          countDown.validText = '获取验证码'
          flag = false
+         clearInterval(time) // 清除定时器
       } else {
          countDown.time -= 1
          countDown.validText = `剩余${countDown.time}s`}
@@ -122,9 +125,41 @@ const countDownChange =() =>{
    })
 }
 
+const loginFormRef = ref()
 // 表单提交
-const submitForm = ()=> {
-
+const  submitForm = async (formEl: any)=> {
+  if (!formEl) return
+  // 手动触发校验
+  await formEl.validate((valid: any, fields: any) => {
+    if (valid) {
+      console.log('submit!')
+      // 注册页面
+      if (fromType.value) {
+         userAuthentication(loginForm).then(({data})=>{
+             if (data.code === 10000) {
+               ElMessage.success('注册成功')
+               fromType.value = 0
+             } 
+         })
+      } else {
+      //  登录页面
+        login(loginForm).then(({data})=>{
+         if (data.code === 10000) {
+            ElMessage.success('登录成功')
+            // 页面跳转逻辑和数据缓存逻辑
+            // 将token和用户信息缓存到浏览器
+            localStorage.setItem('pz_token',data.data.token)
+            localStorage.setItem('pz_userInfo',JSON.stringify(data.data.userInfo)) // 需要把{}转成对象
+            // 页面跳转
+            router.push('/')
+         }
+        })
+      }
+      //
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
 }
 </script>
 

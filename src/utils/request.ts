@@ -29,6 +29,12 @@ http.interceptors.response.use(function (response) {
     if (response.data.code === -1) {
         ElMessage.warning(response.data.message)
     }
+    //当返回的值是-2的时候表示token不对
+    if (response.data.code === -2){
+      localStorage.removeItem('pz_token')
+      localStorage.removeItem('pz_userInfo')
+      window.location.href = window.location.origin
+    }
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     return response;

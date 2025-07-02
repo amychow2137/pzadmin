@@ -3,6 +3,20 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+// 路由守卫
+router.beforeEach((to,from)=>{
+  const token = localStorage.getItem('pz_token')
+  // 非登录页面token不存在以及不在login页面的，跳转到login
+  if (!token && to.path !== '/login') {
+    return '/login'
+  } else if (token && to.path === '/login'){
+    return '/'
+  } else {
+    return true
+  }
+})
+
 // 如果您正在使用CDN引入，请删除下面一行。
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 

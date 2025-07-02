@@ -4,3 +4,24 @@ import request from '../utils/request'
 export const getCode = (data: any) => {
     return request.post('/get/code',data)
 }
+
+// 注册用户
+export const userAuthentication =(data: any)=>{
+    return request.post('/user/authentication',data)
+}
+
+// 登录
+export const login = (data: any) => {
+    return request.post('/login',data)
+}
+
+// 权限管理列表
+export const authAdmin = (params:any) => {
+    return request.get('/auth/admin',{ params })
+}
+
+// 菜单权限数据
+export const userGetMenu = () => {
+    return request.get('/user/getmenu')
+}
+
