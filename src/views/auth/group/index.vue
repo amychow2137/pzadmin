@@ -7,11 +7,15 @@
     widtn = "500"
     >
     <el-form
-      ref="formRef"
+      ref="formRef" 
       label-width="100px"
       label-position="left"
       :model="form"
+      :rules="rules"
     >
+        <el-form-item v-show="false" prop="id">
+          <el-input v-model="form.id" />
+        </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" placeholder="请填写权限名称"></el-input>
         </el-form-item>
@@ -23,28 +27,51 @@
             node-key = 'id' 
             show-checkbox
             :default-checked-keys="defaultKeys"
+            :default-expanded-keys="[2]"
             > 
           </el-tree>
         </el-form-item>
     </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="confirm(formRef)">确认</el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
 import {ref,reactive,onMounted} from 'vue'
-import { userGetMenu } from '../../../api'
+import { userGetMenu,userSetMenu,menuList } from '../../../api'
 
 onMounted(()=>{
+  // 菜单数据
   userGetMenu().then(({ data })=>{
   console.log(data)
   permissionData.value = data.data
   })
+  getListData()
 })
+
+const paginationData = reactive({
+  pageNum: 1, // 第几页
+  pageSize: 10 // 有几条数据
+})
+
+// 请求列表数据（多次请求数据，单独抽离方法）
+const getListData = () => {
+    menuList(paginationData).then(({data})=>{
+
+    })
+}
+
+const formRef = ref()
 
 // form的数据
 const form = reactive({
      name:'',
-     permissions: ''
+     permissions: '',
+     id:''
 })
 // 权限树形结构菜单权限
 const permissionData = ref([])
@@ -56,6 +83,28 @@ const dialogFormVisable = ref(false)
 const beforeClose = () => {
    dialogFormVisable.value = false
 
+}
+
+// 表单校验
+const rules = reactive({
+   // validator自定义校验规则,trigger在什么时候触发
+   name:[{required:true,trigger:'blur',message:'请输入权限名称'}]
+})
+
+// 表单提交
+const confirm = async (formEl:any) =>{
+   if (!formEl) return
+   await formEl.validate((vaild,fields)=>{
+      if (vaild){
+        // 获取到选择的checkbox数据
+        const permissions = JSON.stringify(treeRef.value.getCheckedKeys())
+        userSetMenu({name:form.name,permissions,id:form.id}).then(({data})=>{
+
+        })
+      } else {
+        console.log('error submit!', fields)
+      }
+   })
 }
 
 // 选中权限
