@@ -1,5 +1,16 @@
 <template>
-  <button @click="dialogFormVisable = true">打开</button>
+  <button @click="open(null)">打开</button>
+  <el-table :data="tableData.list" style="width: 100%;">
+    <el-table-column prop="id" label="ID" />
+    <el-table-column prop="name" label="昵称" />
+    <el-table-column prop="permissionName" label="菜单权限" width="500px"/>
+    <el-table-column label="操作" >
+      <template #default="scope">
+        <el-button type="primary" @click="open(scope.row)">编辑</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+
   <el-dialog
     v-model="dialogFormVisable"
     :before-close = 'beforeClose'
@@ -53,15 +64,36 @@ onMounted(()=>{
   getListData()
 })
 
+//列表数据
+const tableData = reactive({
+  list:[],
+  total:0
+})
+
 const paginationData = reactive({
   pageNum: 1, // 第几页
   pageSize: 10 // 有几条数据
 })
 
+// 打开弹窗
+const open =(rowData={})=>{
+    dialogFormVisable.value = true
+    // 弹窗打开form生成是异步的
+    nextTick(()=>{
+      if (rowData) {
+        // 浅拷贝
+        Object.assign(form,{id:rowData.id,name:rowData.name })
+        treeRef.value.setCheckedKeys(rowData.permission)
+      }
+    })
+}
+
 // 请求列表数据（多次请求数据，单独抽离方法）
 const getListData = () => {
     menuList(paginationData).then(({data})=>{
-
+    const {list,total} = data.data
+    tableData.list = list
+    tableData.total = total
     })
 }
 
@@ -81,8 +113,11 @@ const dialogFormVisable = ref(false)
 
 // 关闭弹窗的回掉
 const beforeClose = () => {
-   dialogFormVisable.value = false
-
+  dialogFormVisable.value = false
+  // 重置表单
+  formRef.value.resetFields()
+  // tree选择重置
+  treeRef.value.setCheckedKeys(defaultKeys)
 }
 
 // 表单校验
