@@ -138,7 +138,9 @@ const handleCurrentChange = (val:any) => {
 const dialogFormVisable = ref(false)
 //关闭弹窗的方法
 const beforeClose = () =>{
-
+  dialogFormVisable.value = false
+  // 重置表单
+  formRef.value.resetFields()
 }
 
 // 表单校验

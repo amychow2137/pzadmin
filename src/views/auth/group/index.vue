@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref,reactive,onMounted} from 'vue'
+import {ref,reactive,onMounted, nextTick} from 'vue'
 import { userGetMenu,userSetMenu,menuList } from '../../../api'
 import PanelHead from '../../../components/panelHead.vue'
 import { Plus} from "@element-plus/icons-vue"
@@ -106,6 +106,7 @@ const handleCurrentChange = (val:any) => {
 
 // 打开弹窗
 const open =(rowData={})=>{
+    console.log(rowData)
     dialogFormVisable.value = true
     // 弹窗打开form生成是异步的
     nextTick(()=>{
