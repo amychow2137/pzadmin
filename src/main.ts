@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import panelHead from './components/panelHead.vue'
 
 // 路由守卫
 router.beforeEach((to,from)=>{
@@ -24,6 +25,8 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+//全局注入组建
+app.component('panelHead',panelHead)
 // 路由挂载
 app.use(router)
 // store挂载
