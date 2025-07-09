@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref,reactive } from 'vue'
-import { getCode,userAuthentication,login } from '../../api'
+import { getCode,userAuthentication,login,menuPermissions } from '../../api'
 import { useRouter } from 'vue-router'
 
 const imgUrl = new URL('../../../public/login-head.png',import.meta.url).href
@@ -150,8 +150,12 @@ const  submitForm = async (formEl: any)=> {
             // 将token和用户信息缓存到浏览器
             localStorage.setItem('pz_token',data.data.token)
             localStorage.setItem('pz_userInfo',JSON.stringify(data.data.userInfo)) // 需要把{}转成对象
+            // 获取权限数据
+            menuPermissions().then(({ data })=>{
+               
             // 页面跳转
-            router.push('/')
+            // router.push('/')
+            })
          }
         })
       }

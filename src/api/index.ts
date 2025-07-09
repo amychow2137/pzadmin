@@ -45,4 +45,10 @@ export const updateUser = (data:any) => {
     return request.post('/update/user',data)
 }
 
+// 用户菜单权限
+export const menuPermissions = () => {
+    return request.get('/menu/permissions')
+}
+
+
 
