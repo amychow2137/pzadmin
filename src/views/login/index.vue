@@ -40,9 +40,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref,reactive } from 'vue'
+import { ref,reactive,computed } from 'vue'
 import { getCode,userAuthentication,login,menuPermissions } from '../../api'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const imgUrl = new URL('../../../public/login-head.png',import.meta.url).href
 
@@ -53,7 +54,6 @@ const loginForm = reactive({
    validCode:''
 })
 
-const router = useRouter()
 //  切换表单（0登录 1注册）
 const fromType = ref(0) 
 // 点击切换登录和注册
@@ -125,7 +125,12 @@ const countDownChange =() =>{
    })
 }
 
+const router = useRouter()
 const loginFormRef = ref()
+const store = useStore()
+
+const routerList =  computed(()=>store.state.menu.routerList)
+
 // 表单提交
 const  submitForm = async (formEl: any)=> {
   if (!formEl) return
@@ -152,7 +157,8 @@ const  submitForm = async (formEl: any)=> {
             localStorage.setItem('pz_userInfo',JSON.stringify(data.data.userInfo)) // 需要把{}转成对象
             // 获取权限数据
             menuPermissions().then(({ data })=>{
-               
+               store.commit('dynamicMenu',data.data)
+               console.log(routerList)
             // 页面跳转
             // router.push('/')
             })
