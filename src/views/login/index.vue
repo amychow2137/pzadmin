@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,reactive,computed } from 'vue'
+import { ref,reactive,computed,toRaw } from 'vue'
 import { getCode,userAuthentication,login,menuPermissions } from '../../api'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -159,8 +159,12 @@ const  submitForm = async (formEl: any)=> {
             menuPermissions().then(({ data })=>{
                store.commit('dynamicMenu',data.data)
                console.log(routerList)
-            // 页面跳转
-            // router.push('/')
+               // toRaw可以把一个响应式的数据变成一个普通的数据
+               toRaw(routerList.value).forEach((item: any) => {
+                  router.addRoute('main',item)
+               })
+               // 页面跳转
+               router.push('/')
             })
          }
         })

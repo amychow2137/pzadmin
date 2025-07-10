@@ -23,12 +23,11 @@
    
    const router = useRouter();
    const store = useStore()
-   const isCollapse =  computed(()=> store.state.menu.isCollapse)
-
-// 直接通过 reactive 初始化并保留类型推断
-    const menuData = reactive((router.options.routes ?? [])?.[0]?.children || []);
-  
-
+   const isCollapse =  computed(() => store.state.menu.isCollapse)
+  // 直接通过 reactive 初始化并保留类型推断
+  // const menuData = reactive((router.options.routes ?? [])?.[0]?.children || []);
+   const menuData = computed(() => store.state.menu.routerList)
+   
   const handleOpen = () =>{
 
   }
