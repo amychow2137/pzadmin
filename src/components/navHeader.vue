@@ -81,6 +81,7 @@ const handleClick = (command:any) => {
     if (command === 'cancel') {
         localStorage.removeItem('pz_token')
         localStorage.removeItem('pz_userInfo')
+        localStorage.removeItem('pz_v3pz')
 
         window.location.href = window.location.origin
     }

@@ -33,6 +33,7 @@ http.interceptors.response.use(function (response) {
     if (response.data.code === -2){
       localStorage.removeItem('pz_token')
       localStorage.removeItem('pz_userInfo')
+      localStorage.removeItem('pz_v3pz')
       window.location.href = window.location.origin
     }
     // 2xx 范围内的状态码都会触发该函数。

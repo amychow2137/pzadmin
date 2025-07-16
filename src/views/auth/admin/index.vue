@@ -1,6 +1,6 @@
 <template>
   <div class=""></div>
-    <panel-head />
+    <panel-head :route="route"/>
     <el-table :data="tableData.list" style="width: 100%;">
     <el-table-column prop="id" label="ID" />
     <el-table-column prop="name" label="昵称" />
@@ -89,6 +89,9 @@
 import { authAdmin,menuSelectList,updateUser } from '../../../api';
 import { ref,reactive,onMounted } from 'vue';
 import dayjs from 'dayjs'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const paginationData = reactive({
   pageNum: 1, // 第几页

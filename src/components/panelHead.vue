@@ -1,14 +1,19 @@
 <template>
   <div class="panel-heading">
    <div class="panel-lead">
-    <div class="title">菜单管理
+    <div class="title">{{ props.route.meta.name }}
     </div>
-    <p class="description">菜单规则通常对应一个控制器的方法,同时菜单栏数据也从中获取
+    <p class="description">{{ props.route.meta.describe }}
     </p>
    </div>
   </div>
 </template>
 <script setup lang="ts">
+  const props = defineProps({
+    route:{
+      type: Object
+    }
+  })
 
 </script>
 <style lang="less" scoped>
