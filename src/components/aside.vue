@@ -4,11 +4,11 @@
         active-text-color="#ffd04b"
         background-color="#545c64"
         class="aside-container"
-        default-active="2"
         text-color="#fff"
         :collapse='isCollapse'
         @open="handleOpen"
         @close="handleClose"
+        :default_active="active"
       >
         <p class="logo-lg">{{ isCollapse ? 'DIDI' : 'DIDI陪诊'}}</p>
         <TreeMenu :index="1" :menuData="menuData"/>
@@ -24,6 +24,10 @@
    const router = useRouter();
    const store = useStore()
    const isCollapse =  computed(() => store.state.menu.isCollapse)
+
+   const active = computed(()=>store.state.menu.menuActive)
+   console.log('1111',active)
+
   // 直接通过 reactive 初始化并保留类型推断
   // const menuData = reactive((router.options.routes ?? [])?.[0]?.children || []);
    const menuData = computed(() => store.state.menu.routerList)

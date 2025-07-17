@@ -20,9 +20,9 @@
         <el-dropdown @command="handleClick">
             <div class="el-dropdown-link flex-box">
                 <el-avatar
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    :src="userInfo.avatar"
                 />
-                <p class="user-name">admin</p>
+                <p class="user-name">{{ userInfo.name }}</p>
             </div>
             <!-- <span class="el-dropdown-link">
             Dropdown List
@@ -41,8 +41,10 @@
   import {useStore} from 'vuex'
   import { computed } from 'vue';
   import { useRoute,useRouter } from 'vue-router'
-import { isTemplateExpression } from 'typescript';
-
+  
+  // 读取缓存中的数据
+  const userInfo = JSON.parse(localStorage.getItem('pz_userInfo'))
+   
   // 拿到store的实例
   const store = useStore()
   // 当前的路由对象,拿到当前url路径
